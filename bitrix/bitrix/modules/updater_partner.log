@@ -1,0 +1,12 @@
+2025-04-22 02:10:58 -  - exec CUpdateClientPartner::__CollectRequestData
+2025-04-22 02:10:58 -  - exec CUpdateClientPartner::GetHTTPPage
+2025-04-22 02:10:59 -  - exec CUpdateClientPartner::ParseServerData
+2025-04-22 02:10:59 -  - exec CUpdateClientPartner::GetUpdatesList
+2025-04-22 02:10:59 -  - exec CUpdateClientPartner::__CollectRequestData
+2025-04-22 02:10:59 -  - utf=Y&lang=ru&stable=Y&CANGZIP=Y&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=localhost&LICENSE_KEY=X&SUPD_STS=1&SUPD_URS=0&TYPENC=D&CLIENT_PHPVER=8.1.32&NGINX=Y&dbv=8.0.42&instm=main%2C25.100.300%2CY%3Bclouds%2C25.0.0%2CN%3Bb24connector%2C24.0.0%2CN%3Biblock%2C24.300.0%2CN%3Bperfmon%2C24.200.0%2CN%3Btranslate%2C24.100.0%2CN%3Blanding%2C24.800.0%2CN%3Blocation%2C25.0.0%2CN%3Bsecurity%2C24.0.100%2CN%3Bbitrix.sitecorporate%2C24.0.0%2CN%3Bbitrixcloud%2C24.100.0%2CN%3Brest%2C25.100.200%2CN%3Bfileman%2C24.500.0%2CN%3Bui%2C25.0.0%2CN%3Bsearch%2C25.0.0%2CN%3Bsocialservices%2C24.100.100%2CN%3Bseo%2C24.600.100%2CN%3Bhighloadblock%2C24.100.0%2CN%3Bmessageservice%2C24.900.0%2CN&reqm=bitrix.sitecorporate&fullmoduleinfo=Y&SUPD_SRS=RU&SUPD_CMP=N
+2025-04-22 02:10:59 -  - exec CUpdateClientPartner::GetHTTPPage
+2025-04-22 02:10:59 -  - TIME GetUpdatesList(request) 0.201 sec
+2025-04-22 02:10:59 -  - exec CUpdateClientPartner::ParseServerData
+2025-04-22 02:10:59 -  - exec CUpdateClientPartner::__CollectRequestData
+2025-04-22 02:10:59 -  - exec CUpdateClientPartner::GetHTTPPage
+2025-04-22 02:10:59 -  - exec CUpdateClientPartner::ParseServerData

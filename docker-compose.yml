@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./bitrix:/var/www/html
+      - ./docker/nginx/conf:/etc/nginx/conf.d
+      - ./docker/nginx/logs:/var/log/nginx
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - php
+    networks:
+      - bitrix-network
+    restart: unless-stopped
+
+  php:
+    image: php:8.1-fpm
+    volumes:
+      - ./bitrix:/var/www/html
+      - ./docker/php/conf/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./docker/php/logs:/var/log/php
+    command: >
+      bash -c "apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev libxml2-dev libzip-dev unzip libicu-dev && 
+      docker-php-ext-configure gd --with-freetype --with-jpeg && 
+      docker-php-ext-install -j$(nproc) gd mysqli pdo pdo_mysql soap zip intl opcache && 
+      pecl install redis && docker-php-ext-enable redis && 
+      php-fpm"
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - bitrix-network
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: bitrix
+      MYSQL_USER: bitrix
+      MYSQL_PASSWORD: bitrixpassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/conf:/etc/mysql/conf.d
+      - ./docker/mysql/initdb:/docker-entrypoint-initdb.d
+    networks:
+      - bitrix-network
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - bitrix-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - bitrix-network
+    restart: unless-stopped
+
+  elasticsearch:
+    image: elasticsearch:7.14.0
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - bitrix-network
+    restart: unless-stopped
+
+  logstash:
+    image: logstash:7.14.0
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./docker/logstash/config:/etc/logstash/conf.d
+    networks:
+      - bitrix-network
+    restart: unless-stopped
+
+  kibana:
+    image: kibana:7.14.0
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    networks:
+      - bitrix-network
+    restart: unless-stopped
+
+networks:
+  bitrix-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  redis-data:
+  elasticsearch-data:
